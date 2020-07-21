@@ -62,7 +62,34 @@ namespace TpModule3
             {
                 Console.WriteLine($"Livre le plus volumineux {livrePlusVolumineux.Titre}");
             }
-           
+
+            //Section moyenne gains auteurs
+
+            Console.WriteLine();
+            var factures = ListeAuteurs.SelectMany(f => f.Factures);
+
+            factures.Average(m => m.Montant);
+
+            foreach (var facture in factures)
+            {
+                Console.WriteLine($"Auteur = {facture.Auteur.Nom} {facture.Auteur.Prenom} ");
+            }
+
+            //Section auteurs + liste livres 
+            Console.WriteLine();
+
+            Console.WriteLine("Livres par auteurs : ");
+            Console.WriteLine();
+            var auteursEtLivres = ListeLivres.GroupBy(l => l.Auteur);
+
+            foreach (var livres in auteursEtLivres)
+            {
+                Console.WriteLine($"Auteur = {livres.Key.Prenom} {livres.Key.Nom}");
+                foreach (var livre in livres)
+                {
+                    Console.WriteLine($"Livre = {livre.Titre}");
+                }
+            }
 
             Console.ReadKey();
         }
