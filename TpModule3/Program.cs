@@ -12,13 +12,62 @@ namespace TpModule3
         private static List<Auteur> ListeAuteurs = new List<Auteur>();
         private static List<Livre> ListeLivres = new List<Livre>();
 
-        public void Main(string[] args)
+        public static void Main(string[] args)
         {
+            InitialiserDatas();
 
 
+            //Section Auteur par G 
+
+            var auteursParG = ListeAuteurs.Where(n => n.Nom.StartsWith("G"));
+
+            Console.WriteLine("Noms des auteurs commençant par G : ");
+            Console.WriteLine();
+            foreach (var auteur in auteursParG)
+            {
+                Console.WriteLine(auteur.Nom);
+            }
+
+
+
+            //Section plus de livres 
+            Console.WriteLine();
+            Console.WriteLine("Auteur ayant écrit le plus de livres");
+            Console.WriteLine();
+            var auteurProlifique = ListeLivres.GroupBy(l => l.Auteur).OrderByDescending(n => n.Count()).Take(1);
+
+            foreach (var auteur in auteurProlifique)
+            {
+                Console.WriteLine(auteur.Key.Nom);
+            }
+
+            //Section nombre moyen de pages par livres par auteur
+            Console.WriteLine();
+            Console.WriteLine("Nombre moyen de pages par livres par auteur" );
+            Console.WriteLine();
+            var livresParAuteur = ListeLivres.GroupBy(l => l.Auteur);
+
+            foreach (var livre in livresParAuteur)
+            {
+                Console.WriteLine($"Auteur {livre.Key.Nom} {livre.Key.Prenom} moyenne de pages = {livre.Average(l => l.NbPages)}");
+            }
+
+            //Section titre du livre avec plus de pages
+
+            var livresVolumineux = ListeLivres.OrderByDescending(l => l.NbPages).Take(1);
+
+            Console.WriteLine();
+
+            foreach (var livrePlusVolumineux in livresVolumineux)
+            {
+                Console.WriteLine($"Livre le plus volumineux {livrePlusVolumineux.Titre}");
+            }
+           
+
+            Console.ReadKey();
         }
 
-        private void InitialiserDatas()
+        private static void InitialiserDatas()
         {
             ListeAuteurs.Add(new Auteur("GROUSSARD", "Thierry"));
             ListeAuteurs.Add(new Auteur("GABILLAUD", "Jérôme"));
